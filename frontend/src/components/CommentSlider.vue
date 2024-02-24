@@ -7,7 +7,7 @@
     :modules="modules"
     class="mySwiper"
     :autoplay="{
-      delay: 1500,
+      delay: 2000,
       disableOnInteraction: false,
     }"
   >

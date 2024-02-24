@@ -1,5 +1,6 @@
 <template>
   <div class="page home">
+      <dotlottie-player id="couch-lottie" src="https://lottie.host/37ff25ee-b6c0-4106-b84a-733d832423aa/KIEfYCAheA.json" background="transparent" speed="0.5" style="width: 1000px; height: 1000px;" loop autoplay></dotlottie-player>
     <div class="full-width">
       <div class="statement-container">
         <p class="subtitle">De Bibliotheek vraagt zich af...</p>
@@ -62,6 +63,13 @@ export default defineComponent({
 .page.home {
   background-color: #f6f6f6;
   height: 100vh;
+  overflow: hidden;
+
+  #couch-lottie {
+    position: absolute;
+    bottom: -24vh;
+    right: -55px;
+  }
 
   .full-width {
     display: flex;
@@ -70,6 +78,7 @@ export default defineComponent({
     align-items: center;
     height: 100%;
     gap: 50px;
+    overflow: hidden;
 
     .statement-container {
 

@@ -9,6 +9,9 @@ export default defineComponent({});
 </script>
 
 <style lang="scss">
+body {
+  overflow: hidden;
+}
 #app {
   font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
