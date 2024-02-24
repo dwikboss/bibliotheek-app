@@ -15,7 +15,7 @@ import { defineComponent } from 'vue';
 import { supabase } from '../lib/supabaseClient';
 import CommentSlider from '../components/CommentSlider.vue';
 import type _IStatement from '../interfaces/_IStatement';
-import type _IComment from '../interfaces/_IStatement';
+import type _IComment from '../interfaces/_IComment';
 
 export default defineComponent({
   name: 'HomeView',
