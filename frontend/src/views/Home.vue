@@ -67,7 +67,7 @@ export default defineComponent({
 
   #couch-lottie {
     position: absolute;
-    bottom: -20vh;
+    bottom: -182px;
     right: -55px;
   }
 
