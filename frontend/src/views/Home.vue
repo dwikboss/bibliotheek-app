@@ -1,12 +1,20 @@
 <template>
   <div class="page home">
-    <dotlottie-player id="couch-lottie" src="https://lottie.host/37ff25ee-b6c0-4106-b84a-733d832423aa/KIEfYCAheA.json" background="transparent" speed="0.5" style="width: 800px; height: 800px;" loop autoplay></dotlottie-player>
+    <dotlottie-player
+      id="couch-lottie"
+      src="https://lottie.host/37ff25ee-b6c0-4106-b84a-733d832423aa/KIEfYCAheA.json"
+      background="transparent"
+      speed="0.5"
+      style="width: 800px; height: 800px"
+      loop
+      autoplay
+    ></dotlottie-player>
     <div class="full-width">
       <div class="statement-container">
         <p class="subtitle">De Bibliotheek vraagt zich af...</p>
         <h1 class="statement">{{ statement.statement }}</h1>
       </div>
-      <CommentSlider :comments="comments"/>
+      <CommentSlider :comments="comments" />
     </div>
   </div>
 </template>
@@ -28,9 +36,10 @@ export default defineComponent({
   },
   mounted() {
     this.fetchStatement(supabase);
+    this.subscribeToComments(supabase);
   },
   components: {
-    CommentSlider
+    CommentSlider,
   },
   methods: {
     async fetchStatement(supabase: any) {
@@ -39,7 +48,7 @@ export default defineComponent({
         if (error) {
           throw error;
         }
-        
+
         this.statement = data[0];
         await this.fetchCommentsForStatement(supabase, this.statement.id);
       } catch (error) {
@@ -53,11 +62,19 @@ export default defineComponent({
       } catch (error) {
         console.error('Error fetching opinions:');
       }
-    }
-  }
+    },
+    subscribeToComments(supabase: any) {
+      const channels = supabase
+        .channel('custom-all-channel')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'comments' }, (payload: any) => {
+          console.log('Change received!', payload);
+          this.fetchCommentsForStatement(supabase, this.statement.id);
+        })
+        .subscribe();
+    },
+  },
 });
 </script>
-
 
 <style lang="scss" scoped>
 .page.home {
@@ -81,7 +98,6 @@ export default defineComponent({
     overflow: hidden;
 
     .statement-container {
-
       .subtitle {
         font-family: 'Rijksoverheid Serif Italic';
         font-size: 2rem;
