@@ -6,6 +6,7 @@
     :freeMode="true"
     :modules="modules"
     class="mySwiper"
+    @swiper="onSwiper"
     :autoplay="{
       delay: 2000,
       disableOnInteraction: false,
@@ -36,6 +37,7 @@ export default defineComponent({
   data() {
     return {
       modules: [Autoplay],
+      swiper: null as any,
     };
   },
   props: {
@@ -44,7 +46,18 @@ export default defineComponent({
       default: () => [],
     },
   },
+  mounted() {
+    this.initSwiper();
+  },
   methods: {
+    onSwiper(swiper: any) {
+      this.swiper = swiper;
+    },
+    initSwiper() {
+      this.swiper.update();
+      this.swiper.updateSlides();
+      console.log('update swiper');
+    },
     formatTimestamp(timestamp: any) {
       const now = new Date();
       const created = new Date(timestamp);

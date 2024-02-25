@@ -10,7 +10,7 @@
       autoplay
     ></dotlottie-player>
     <div class="qr-section">
-      <img src="@/assets/images/qr.png" alt="qr">
+      <img src="@/assets/images/qr.png" alt="qr" />
       <div class="qr-text">
         <p>Ook een reactie achterlaten? Scan de QR code!</p>
         <p>Of ga naar https://bibliotheek-app.vercel.app/mobile</p>
@@ -21,7 +21,7 @@
         <p class="subtitle">De Bibliotheek vraagt zich af...</p>
         <h1 class="statement">{{ statement.statement }}</h1>
       </div>
-      <CommentSlider :comments="comments" />
+      <CommentSlider ref="commentSlider" :comments="comments" />
     </div>
   </div>
 </template>
@@ -66,6 +66,7 @@ export default defineComponent({
       try {
         const { data, error } = await supabase.from('comments').select('*').eq('statement_id', statementId);
         this.comments = data;
+        this.initCommentSlider();
       } catch (error) {
         console.error('Error fetching opinions:');
       }
@@ -76,8 +77,14 @@ export default defineComponent({
         .on('postgres_changes', { event: '*', schema: 'public', table: 'comments' }, (payload: any) => {
           console.log('Change received!', payload);
           this.fetchCommentsForStatement(supabase, this.statement.id);
+          this.initCommentSlider();
         })
         .subscribe();
+    },
+    initCommentSlider() {
+      if (this.$refs.commentSlider) {
+        (this.$refs.commentSlider as any).initSwiper();
+      }
     },
   },
 });
