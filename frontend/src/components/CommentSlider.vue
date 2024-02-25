@@ -51,7 +51,7 @@ export default defineComponent({
       const diff = now.getTime() - created.getTime();
 
       if (diff < 10 * 60 * 1000) {
-        return 'Just now';
+        return 'Zojuist geplaatst';
       }
 
       const hours = String(created.getHours()).padStart(2, '0');

@@ -9,6 +9,13 @@
       loop
       autoplay
     ></dotlottie-player>
+    <div class="qr-section">
+      <img src="@/assets/images/qr.png" alt="qr">
+      <div class="qr-text">
+        <p>Ook een reactie achterlaten? Scan de QR code!</p>
+        <p>Of ga naar https://bibliotheek-app.vercel.app/mobile</p>
+      </div>
+    </div>
     <div class="full-width">
       <div class="statement-container">
         <p class="subtitle">De Bibliotheek vraagt zich af...</p>
@@ -86,6 +93,31 @@ export default defineComponent({
     position: absolute;
     bottom: -182px;
     right: -55px;
+  }
+
+  .qr-section {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    bottom: 75px;
+    left: 75px;
+
+    p:first-child {
+      color: var(--orange);
+      font-family: 'Rijksoverheid Bold';
+      font-size: 24px;
+    }
+
+    p:nth-child(2) {
+      color: var(--orange);
+      font-family: 'Rijksoverheid Regular';
+      font-size: 18px;
+    }
+
+    img {
+      width: 80px;
+    }
   }
 
   .full-width {
