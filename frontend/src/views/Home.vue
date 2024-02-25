@@ -1,14 +1,6 @@
 <template>
   <div class="page home">
-    <dotlottie-player
-      id="couch-lottie"
-      src="https://lottie.host/37ff25ee-b6c0-4106-b84a-733d832423aa/KIEfYCAheA.json"
-      background="transparent"
-      speed="0.5"
-      style="width: 800px; height: 800px"
-      loop
-      autoplay
-    ></dotlottie-player>
+    <dotlottie-player id="couch-lottie" src="https://lottie.host/2ab7f16f-981f-4569-9ff8-8af10393eb9e/AYzJCBsYeD.json" background="transparent" speed="1" style="width: 800px; height: 800px;" loop autoplay></dotlottie-player>
     <div class="qr-section">
       <img src="@/assets/images/qr.png" alt="qr" />
       <div class="qr-text">
