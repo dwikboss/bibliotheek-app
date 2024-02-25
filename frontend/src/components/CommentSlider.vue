@@ -12,6 +12,12 @@
       disableOnInteraction: false,
     }"
   >
+    <swiper-slide class="empty-slide">empty</swiper-slide>
+    <swiper-slide class="empty-slide">empty</swiper-slide>
+    <swiper-slide class="empty-slide">empty</swiper-slide>
+    <swiper-slide class="empty-slide">empty</swiper-slide>
+    <swiper-slide class="empty-slide">empty</swiper-slide>
+    <swiper-slide class="empty-slide">empty</swiper-slide>
     <swiper-slide v-for="comment in comments" :key="comment.id">
       <p class="comment">{{ comment.comment }}</p>
       <div class="comment-info">
@@ -50,8 +56,18 @@ export default defineComponent({
     this.initSwiper();
   },
   methods: {
+    destroySlides() {
+      const emptySlides = document.querySelectorAll('.empty-slide');
+      emptySlides.forEach((slide) => {
+        slide.remove();
+      });
+      this.initSwiper();
+    },
     onSwiper(swiper: any) {
       this.swiper = swiper;
+      setTimeout(() => {
+        this.destroySlides();
+      }, 100);
     },
     initSwiper() {
       this.swiper.update();
@@ -85,6 +101,10 @@ export default defineComponent({
   height: 25vh;
 }
 
+.empty-slide {
+  display: none;
+}
+
 .swiper-slide {
   text-align: center;
   font-size: 18px;
@@ -101,8 +121,8 @@ export default defineComponent({
     justify-content: space-between;
 
     .time {
-        font-family: 'Rijksoverheid Regular';
-        color: #00000067;
+      font-family: 'Rijksoverheid Regular';
+      color: #00000067;
     }
   }
 
