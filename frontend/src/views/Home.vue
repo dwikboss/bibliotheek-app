@@ -10,7 +10,7 @@
     </div>
     <div class="full-width">
       <div class="statement-container">
-        <p class="subtitle">De Bibliotheek vraagt zich af...</p>
+        <p class="subtitle">Bibliotheek de LocHal vraagt zich af...</p>
         <h1 class="statement">{{ statement.statement }}</h1>
       </div>
       <CommentSlider ref="commentSlider" :comments="comments" />
