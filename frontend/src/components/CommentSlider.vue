@@ -12,12 +12,12 @@
       disableOnInteraction: false,
     }"
   >
-    <swiper-slide class="empty-slide">empty</swiper-slide>
-    <swiper-slide class="empty-slide">empty</swiper-slide>
-    <swiper-slide class="empty-slide">empty</swiper-slide>
-    <swiper-slide class="empty-slide">empty</swiper-slide>
-    <swiper-slide class="empty-slide">empty</swiper-slide>
-    <swiper-slide class="empty-slide">empty</swiper-slide>
+    <swiper-slide class="empty-slide"></swiper-slide>
+    <swiper-slide class="empty-slide"></swiper-slide>
+    <swiper-slide class="empty-slide"></swiper-slide>
+    <swiper-slide class="empty-slide"></swiper-slide>
+    <swiper-slide class="empty-slide"></swiper-slide>
+    <swiper-slide class="empty-slide"></swiper-slide>
     <swiper-slide v-for="comment in comments" :key="comment.id">
       <p class="comment">{{ comment.comment }}</p>
       <div class="comment-info">
@@ -103,6 +103,8 @@ export default defineComponent({
 
 .empty-slide {
   display: none;
+  background-color: rgb(240, 240, 240) !important;
+  border: none !important;
 }
 
 .swiper-slide {
