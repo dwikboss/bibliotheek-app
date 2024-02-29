@@ -1,16 +1,24 @@
 <template>
   <div class="page home">
-    <dotlottie-player id="couch-lottie" src="https://lottie.host/2ab7f16f-981f-4569-9ff8-8af10393eb9e/AYzJCBsYeD.json" background="transparent" speed="1" style="width: 800px; height: 800px;" loop autoplay></dotlottie-player>
+    <dotlottie-player
+      id="couch-lottie"
+      src="https://lottie.host/8bdc9fbb-21fc-4911-9f21-618567149edb/KloXkXOCqr.json"
+      background="transparent"
+      speed="1"
+      style="width: 800px; height: 800px"
+      loop
+      autoplay
+    ></dotlottie-player>
     <div class="qr-section">
-      <img src="@/assets/images/qr.png" alt="qr" />
+      <img src="@/assets/images/qr-code (8).png" alt="qr" />
       <div class="qr-text">
         <p>Ook een reactie achterlaten? Scan de QR code!</p>
-        <p>Of ga naar https://bibliotheek-app.vercel.app/mobile</p>
+        <p>Of ga naar https://statement-otd.vercel.app/mobile</p>
       </div>
     </div>
     <div class="full-width">
       <div class="statement-container">
-        <p class="subtitle">Bibliotheek de LocHal vraagt zich af...</p>
+        <!-- <p class="subtitle">Bibliotheek de LocHal vraagt zich af...</p> -->
         <h1 class="statement">{{ statement.statement }}</h1>
       </div>
       <CommentSlider ref="commentSlider" :comments="comments" />
@@ -43,7 +51,7 @@ export default defineComponent({
   methods: {
     async fetchStatement(supabase: any) {
       try {
-        const { data, error } = await supabase.from('statements').select('*');
+        const { data, error } = await supabase.from('statements').select('*').eq('id', 2);
         if (error) {
           throw error;
         }
@@ -56,7 +64,7 @@ export default defineComponent({
     },
     async fetchCommentsForStatement(supabase: any, statementId: number) {
       try {
-        const { data, error } = await supabase.from('comments').select('*').eq('statement_id', statementId);
+        const { data, error } = await supabase.from('comments').select('*').eq('statement_id', 2);
         this.comments = data;
         this.initCommentSlider();
       } catch (error) {
@@ -68,6 +76,7 @@ export default defineComponent({
         .channel('custom-all-channel')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'comments' }, (payload: any) => {
           console.log('Change received!', payload);
+          location.reload();
           this.fetchCommentsForStatement(supabase, this.statement.id);
           this.initCommentSlider();
         })
@@ -103,19 +112,19 @@ export default defineComponent({
     left: 75px;
 
     p:first-child {
-      color: var(--orange);
+      color: #c6002a;
       font-family: 'Rijksoverheid Bold';
       font-size: 24px;
     }
 
     p:nth-child(2) {
-      color: var(--orange);
+      color: #c6002a;
       font-family: 'Rijksoverheid Regular';
       font-size: 18px;
     }
 
     img {
-      width: 80px;
+      width: 120px;
     }
   }
 
@@ -132,7 +141,7 @@ export default defineComponent({
       .subtitle {
         font-family: 'Rijksoverheid Serif Italic';
         font-size: 2rem;
-        color: var(--orange);
+        color: #c6002a;
         margin-bottom: 10px;
         text-align: center;
       }
@@ -141,7 +150,7 @@ export default defineComponent({
         font-family: 'Rijksoverheid Bold';
         text-align: center;
         font-size: 3.2rem;
-        color: var(--blue);
+        color: #c6002a;
       }
     }
   }

@@ -26,6 +26,11 @@
       </div>
     </swiper-slide>
   </swiper>
+
+  <!-- <div class="answer" v-for="comment in comments" :key="comment.id">
+    <p class="comment">{{ comment.comment }}</p>
+    <p class="name">{{ comment.name }}</p>
+  </div> -->
 </template>
 
 <script lang="ts">
@@ -96,6 +101,19 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+
+.answer {
+  background-color: white;
+  border: 1px solid #c6002a;
+  border-radius: 15px;
+  padding: 25px;
+
+  .comment {
+    font-size: 1.6rem;
+      font-family: 'Rijksoverheid Regular';
+  }
+}
+
 .swiper {
   width: 100%;
   height: 25vh;
@@ -116,7 +134,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  border: 1px solid #ff732045;
+  border: 1px solid #c6002a;
 
   .comment-info {
     display: flex;
@@ -130,7 +148,7 @@ export default defineComponent({
 
   p.comment {
     font-family: 'Rijksoverheid Bold';
-    color: var(--blue);
+    color: #c6002a;
     text-align: left;
     font-size: 1.2rem;
     margin-bottom: 15px;
@@ -138,7 +156,7 @@ export default defineComponent({
 
   p.name {
     font-family: 'Rijksoverheid Serif Italic';
-    color: var(--orange);
+    color: #c6002a;
     text-align: left;
   }
 }

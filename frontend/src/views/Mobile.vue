@@ -46,7 +46,7 @@ export default defineComponent({
   methods: {
     async fetchStatement(supabase: any) {
       try {
-        const { data, error } = await supabase.from('statements').select('*');
+        const { data, error } = await supabase.from('statements').select('*').eq('id', 2);
         if (error) {
           throw error;
         }
@@ -122,7 +122,7 @@ export default defineComponent({
         color: var(--blue);
         width: 100%;
         height: 45px;
-        border: 1px solid #ff732042;
+        border: 1px solid #c6002b52;
         border-radius: 5px;
         background-color: #f4f4f45d;
         padding: 15px;
@@ -132,7 +132,7 @@ export default defineComponent({
         color: white;
         font-family: 'Rijksoverheid Regular';
         width: 100%;
-        background-color: var(--orange);
+        background-color: #c6002a;
         border: none;
         border-radius: 5px;
         height: 50px;
