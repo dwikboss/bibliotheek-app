@@ -10,7 +10,7 @@
       autoplay
     ></dotlottie-player>
     <div class="qr-section">
-      <img src="@/assets/images/qr-code (8).png" alt="qr" />
+      <img src="@/assets/images/qr-code-new.png" alt="qr" />
       <div class="qr-text">
         <p>Ook een reactie achterlaten? Scan de QR code!</p>
         <p>Of ga naar https://statement-otd.vercel.app/mobile</p>
