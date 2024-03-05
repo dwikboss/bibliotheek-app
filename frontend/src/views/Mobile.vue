@@ -64,6 +64,8 @@ export default defineComponent({
           throw error;
         }
         this.submitStatus = 'Uw reactie staat erop!';
+
+        location.reload();
       } catch (error) {
         console.error('Error submitting form:');
         this.submitStatus = 'Er ging even iets mis. Probeer het opnieuw!';
