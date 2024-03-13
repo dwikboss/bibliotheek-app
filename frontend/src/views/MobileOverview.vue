@@ -2,13 +2,13 @@
   <div class="page mobile">
     <div class="circle"></div>
     <div class="full-width">
-      <!-- <FormModal v-if="modalOpened" :comment_id="this.comment_id" :comment="this.comment" :author="this.author" /> -->
       <div class="mobile-comment" v-for="comment in comments" :key="comment.id">
+        <FormModal v-if="modalOpened" :comment_id="this.comment_id" :comment="this.comment" :author="this.author" @closeModal="openModal()" />
         <div>
           <p class="comment">{{ comment.comment }}</p>
           <p class="name">{{ comment.name }}</p>
         </div>
-        <div class="open-reactions" @click="openReactions(comment)">open reacties</div>
+        <div class="open-reactions" @click="openReactions(comment)">Bekijk reacties</div>
         <!-- @click="openModal(comment.id, comment.comment, comment.name)" -->
         <div v-if="comment.reactionsOpened" class="reaction-section">
           <div class="reaction-comment" v-for="reaction in comment.reactions" :key="reaction.id">
@@ -25,6 +25,9 @@
           </form>
         </div>
       </div>
+      <div class="btn-add-comment" @click="openModal()">
+          +
+        </div>
     </div>
   </div>
 </template>
@@ -48,6 +51,7 @@ export default defineComponent({
       comment: '' as String,
       author: '' as String,
       reactionsOpened: false as boolean,
+      modalOpened: false as boolean,
       comment_id: 0 as Number,
       formData: {
         name: '' as String,
@@ -67,13 +71,9 @@ export default defineComponent({
       comment.reactionsOpened = !comment.reactionsOpened;
       this.comment_id = comment.id;
     },
-    // openModal(comment_id, comment, author) {
-    //   this.modalOpened = !this.modalOpened;
-    //   this.comment_id = comment_id;
-    //   this.comment = comment;
-    //   this.author = author;
-    //   console.log(this.author);
-    // },
+    openModal() {
+      this.modalOpened = !this.modalOpened;
+    },
     async submitForm() {
       try {
         const { data, error } = await supabase
@@ -137,6 +137,22 @@ export default defineComponent({
     height: 100%;
     gap: 15px;
     padding-top: 10%;
+
+    .btn-add-comment {
+      color: white;
+      font-size: 2.4rem;
+      background-color: var(--orange);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      font-weight: 400;
+    }
 
     h1 {
       color: var(--blue);
