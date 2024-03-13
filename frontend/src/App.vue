@@ -20,6 +20,7 @@ body {
 
 .page {
   min-height: 100vh;
-  height: 100%;
+  height: 100vh;
+  overflow: scroll;
 }
 </style>

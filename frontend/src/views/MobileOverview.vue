@@ -129,7 +129,6 @@ export default defineComponent({
 .page.mobile {
   background: rgb(255, 115, 32);
   background: linear-gradient(180deg, rgba(255, 115, 32, 0.3169642857142857) 0%, rgba(255, 255, 255, 1) 100%);
-  height: 100vh;
 
   .full-width {
     display: flex;
