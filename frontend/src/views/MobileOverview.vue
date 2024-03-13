@@ -2,13 +2,13 @@
   <div class="page mobile">
     <div class="circle"></div>
     <div class="full-width">
-      <div class="mobile-comment" v-for="comment in comments" :key="comment.id" @click="openReactions(comment)">
+      <div class="mobile-comment" v-for="comment in comments" :key="comment.id">
         <FormModal v-if="modalOpened" :comment_id="this.comment_id" :comment="this.comment" :author="this.author" @closeModal="openModal()" />
         <div>
           <p class="comment">{{ comment.comment }}</p>
           <p class="name">{{ comment.name }}</p>
         </div>
-        <!-- <div class="open-reactions" >Bekijk reacties</div> -->
+        <div class="open-reactions" >Bekijk reacties</div>
         <!-- @click="openModal(comment.id, comment.comment, comment.name)" -->
         <div v-if="comment.reactionsOpened" class="reaction-section">
           <div class="reaction-comment" v-for="reaction in comment.reactions" :key="reaction.id">
