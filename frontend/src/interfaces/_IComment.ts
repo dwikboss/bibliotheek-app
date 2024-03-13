@@ -3,4 +3,5 @@ export default interface Comments {
     created_at: string;
     comment: string;
     name: string;
+    reactions: [];
 }
