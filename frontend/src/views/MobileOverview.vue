@@ -8,7 +8,7 @@
           <p class="comment">{{ comment.comment }}</p>
           <p class="name">{{ comment.name }}</p>
         </div>
-        <div class="open-reactions" >Bekijk reacties</div>
+        <div class="open-reactions" @click="openReactions(comment)">Bekijk reacties</div>
         <!-- @click="openModal(comment.id, comment.comment, comment.name)" -->
         <div v-if="comment.reactionsOpened" class="reaction-section">
           <div class="reaction-comment" v-for="reaction in comment.reactions" :key="reaction.id">
