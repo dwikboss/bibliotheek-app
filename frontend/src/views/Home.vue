@@ -39,7 +39,6 @@ export default defineComponent({
     return {
       comments: [] as _IComment[],
       statement: {} as _IStatement,
-      reactions: [] as _IReaction[],
     };
   },
   mounted() {
@@ -61,7 +60,7 @@ export default defineComponent({
           throw commentsError;
         }
 
-        const reactionsPromises = comments.map(async (comment) => {
+        const reactionsPromises = comments.map(async (comment: any) => {
           const { data: reactions, error: reactionsError } = await supabase
             .from('reactions')
             .select('*')

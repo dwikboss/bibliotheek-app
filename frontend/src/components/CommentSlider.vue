@@ -29,14 +29,14 @@
         </div>
       </div>
       <div class="reaction-container">
-        <div class="reaction" v-for="reaction in comment.reactions" :key="reaction.id">
+        <div class="reaction" v-for="reaction in comment.reactions" :key="(reaction as any).id">
           <div class="single-container">
             <div class="single-reaction">
               <div class="top-reaction">
-                <p class="reaction-reaction">{{ reaction.reaction }}</p>
-                <p class="reaction-time">{{ formatTimestamp(reaction.created_at) }}</p>
+                <p class="reaction-reaction">{{ (reaction as any).reaction }}</p>
+                <p class="reaction-time">{{ formatTimestamp((reaction as any).created_at) }}</p>
               </div>
-              <p class="reaction-name">{{ reaction.name }}</p>
+              <p class="reaction-name">{{ (reaction as any).name }}</p>
             </div>
           </div>
         </div>
@@ -76,7 +76,6 @@ export default defineComponent({
   },
   mounted() {
     this.initSwiper();
-    console.log('Reactions prop:', this.reactions);
   },
   methods: {
     destroySlides() {
