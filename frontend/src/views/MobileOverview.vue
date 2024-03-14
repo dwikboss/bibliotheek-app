@@ -8,7 +8,6 @@
           <p class="comment">{{ comment.comment }}</p>
           <p class="name">{{ comment.name }}</p>
         </div>
-        <div class="open-reactions" @click="openReactions(comment)">Bekijk reacties</div>
         <!-- @click="openModal(comment.id, comment.comment, comment.name)" -->
         <div v-if="comment.reactionsOpened" class="reaction-section">
           <div class="reaction-comment" v-for="reaction in comment.reactions" :key="(reaction as any).id">
@@ -24,10 +23,13 @@
             </div>
           </form>
         </div>
-      </div>
-      <div class="btn-add-comment" @click="openModal()">
-          +
+        
+        <div class="open-reactions" @click="openReactions(comment)">
+          <span v-if="comment.reactionsOpened">Sluit reacties</span>
+          <span v-else>Bekijk reacties</span>
         </div>
+      </div>
+      <div class="btn-add-comment" @click="openModal()">+</div>
     </div>
   </div>
 </template>
@@ -170,6 +172,7 @@ export default defineComponent({
         color: rgba(0, 0, 0, 0.534);
         margin-top: 10px;
         text-align: center;
+        text-decoration: underline;
       }
 
       .reaction-section {
@@ -201,6 +204,7 @@ export default defineComponent({
             border-radius: 5px;
             height: 40px;
             margin-top: 25px;
+            margin-bottom: 15px;
             font-size: 0.8rem;
           }
         }

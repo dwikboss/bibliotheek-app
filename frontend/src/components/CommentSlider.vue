@@ -1,9 +1,17 @@
 <template>
-  <swiper :slidesPerView="4" :spaceBetween="25" :loop="true" :freeMode="true" :modules="modules" class="mySwiper"
-    @swiper="onSwiper" :autoplay="{
-    delay: 2000,
-    disableOnInteraction: false,
-  }">
+  <swiper
+    :slidesPerView="5"
+    :spaceBetween="25"
+    :loop="true"
+    :freeMode="true"
+    :modules="modules"
+    class="mySwiper"
+    @swiper="onSwiper"
+    :autoplay="{
+      delay: 2000,
+      disableOnInteraction: false,
+    }"
+  >
     <swiper-slide class="empty-slide"></swiper-slide>
     <swiper-slide class="empty-slide"></swiper-slide>
     <swiper-slide class="empty-slide"></swiper-slide>
@@ -13,10 +21,25 @@
     <swiper-slide class="empty-slide"></swiper-slide>
     <swiper-slide class="empty-slide"></swiper-slide>
     <swiper-slide v-for="comment in comments" :key="comment.id">
-      <p class="comment">{{ comment.comment }}</p>
-      <div class="comment-info">
-        <p class="name">{{ comment.name }}</p>
-        <p class="time">{{ formatTimestamp(comment.created_at) }}</p>
+      <div class="comment-body">
+        <p class="comment">{{ comment.comment }}</p>
+        <div class="comment-info">
+          <p class="name">{{ comment.name }}</p>
+          <p class="time">{{ formatTimestamp(comment.created_at) }}</p>
+        </div>
+      </div>
+      <div class="reaction-container">
+        <div class="reaction" v-for="reaction in comment.reactions" :key="reaction.id">
+          <div class="single-container">
+            <div class="single-reaction">
+              <div class="top-reaction">
+                <p class="reaction-reaction">{{ reaction.reaction }}</p>
+                <p class="reaction-time">{{ formatTimestamp(reaction.created_at) }}</p>
+              </div>
+              <p class="reaction-name">{{ reaction.name }}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </swiper-slide>
   </swiper>
@@ -43,7 +66,6 @@ export default defineComponent({
     return {
       modules: [Autoplay],
       swiper: null as any,
-      // reactions: [] as _IReaction[],
     };
   },
   props: {
@@ -51,14 +73,10 @@ export default defineComponent({
       type: Array as () => _IComment[],
       default: () => [],
     },
-    reactions: {
-      type: Array as () => _IReaction[],
-      default: () => [],
-    },
   },
   mounted() {
     this.initSwiper();
-    console.log("Reactions prop:", this.reactions);
+    console.log('Reactions prop:', this.reactions);
   },
   methods: {
     destroySlides() {
@@ -115,7 +133,6 @@ export default defineComponent({
 
 .swiper {
   width: 100%;
-  height: 25vh;
 }
 
 .empty-slide {
@@ -124,9 +141,50 @@ export default defineComponent({
   border: none !important;
 }
 
-.swiper-slide {
+.reaction-container {
+  background-color: rgba(206, 206, 206, 0.3);
+  padding: 25px;
+  border-radius: 10px;
+  margin-top: 15px;
+  font-family: 'Rijksoverheid Regular';
+  font-size: 14px;
+
+  .reaction {
+    margin-bottom: 15px;
+  }
+
+  .top-reaction {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .single-reaction {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+    .reaction-time {
+      font-family: 'Rijksoverheid Regular';
+      color: #00000067;
+      font-size: 14px;
+    }
+
+    .reaction-reaction {
+      font-size: 16px;
+      margin-bottom: 5px;
+      color: var(--blue);
+      font-family: 'Rijksoverheid Bold';
+    }
+    .reaction-name {
+      color: var(--orange);
+      font-family: 'Rijksoverheid Serif Italic';
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.comment-body {
   text-align: center;
-  font-size: 18px;
   background: #ffffff;
   border-radius: 10px;
   padding: 25px;
@@ -134,6 +192,7 @@ export default defineComponent({
   flex-direction: column;
   justify-content: flex-end;
   border: 1px solid var(--orange);
+  height: 180px;
 
   .comment-info {
     display: flex;
@@ -149,7 +208,7 @@ export default defineComponent({
     font-family: 'Rijksoverheid Bold';
     color: var(--blue);
     text-align: left;
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-bottom: 15px;
   }
 

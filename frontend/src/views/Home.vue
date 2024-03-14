@@ -1,11 +1,18 @@
 <template>
   <div class="page home">
-    <dotlottie-player id="couch-lottie" src="https://lottie.host/2ab7f16f-981f-4569-9ff8-8af10393eb9e/AYzJCBsYeD.json"
-      background="transparent" speed="1" style="width: 600px; height: 600px;" loop autoplay></dotlottie-player>
+    <dotlottie-player
+      id="couch-lottie"
+      src="https://lottie.host/2ab7f16f-981f-4569-9ff8-8af10393eb9e/AYzJCBsYeD.json"
+      background="transparent"
+      speed="1"
+      style="width: 600px; height: 600px"
+      loop
+      autoplay
+    ></dotlottie-player>
     <div class="qr-section">
       <img src="@/assets/images/qr-code-new.png" alt="qr" />
       <div class="qr-text">
-        <p>Ook een reactie achterlaten? Scan de QR code</p>
+        <p>Ook iets achterlaten? Scan de QR code</p>
         <p>Of ga naar https://statement-otd.vercel.app/mobile</p>
       </div>
     </div>
@@ -14,7 +21,7 @@
         <p class="subtitle">Bibliotheek de LocHal</p>
         <h1 class="statement">Vind en maak connecties.</h1>
       </div>
-      <CommentSlider ref="commentSlider" :comments="comments" :reactions="reactions" />
+      <CommentSlider ref="commentSlider" :comments="comments" />
     </div>
   </div>
 </template>
@@ -36,32 +43,25 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.fetchStatement(supabase);
+    this.fetchCommentsForStatement(supabase, this.statement.id);
     this.subscribeToComments(supabase);
   },
   components: {
     CommentSlider,
   },
   methods: {
-    async fetchStatement(supabase: any) {
-      try {
-        const { data, error } = await supabase.from('statements').select('*').eq('id', 3);
-        if (error) {
-          throw error;
-        }
-        this.statement = data[0];
-        await this.fetchCommentsForStatement(supabase, this.statement.id);
-      } catch (error) {
-        console.error('Error fetching opinions:');
-      }
-    },
     async fetchCommentsForStatement(supabase: any, statementId: number) {
       try {
-        const { data, error } = await supabase.from('comments').select('*').eq('statement_id', 3);
-        this.comments = data;
-        this.initCommentSlider();
+        const { data: comments, error: commentsError } = await supabase
+          .from('comments')
+          .select('*')
+          .eq('statement_id', 3);
 
-        for (const comment of data) {
+        if (commentsError) {
+          throw commentsError;
+        }
+
+        const reactionsPromises = comments.map(async (comment) => {
           const { data: reactions, error: reactionsError } = await supabase
             .from('reactions')
             .select('*')
@@ -71,27 +71,28 @@ export default defineComponent({
             console.error('Error fetching reactions:', reactionsError.message);
           } else {
             comment.reactions = reactions || [];
-            console.log(comment.reactions);
           }
-        }
-        this.comments = comments || [];
-        console.log(this.reactions);
+        });
 
+        await Promise.all(reactionsPromises);
+
+        this.comments = comments || [];
       } catch (error) {
-        console.error('Error fetching opinions:');
+        console.error('Error fetching comments:', error);
       }
     },
+
     subscribeToComments(supabase: any) {
       const channels = supabase
         .channel('custom-all-channel')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'comments' }, (payload: any) => {
-          console.log('Change received!', payload);
-          location.reload();
+        .on('postgres_changes', { event: '*', schema: 'public', table: '*' }, (payload: any) => {
+          console.log('Comments received!', payload);
           this.fetchCommentsForStatement(supabase, this.statement.id);
-          this.initCommentSlider();
+          location.reload();
         })
         .subscribe();
     },
+
     initCommentSlider() {
       if (this.$refs.commentSlider) {
         (this.$refs.commentSlider as any).initSwiper();
@@ -109,7 +110,7 @@ export default defineComponent({
 
   #couch-lottie {
     position: absolute;
-    bottom: -182px;
+    bottom: -137px;
     right: -55px;
   }
 
@@ -140,7 +141,7 @@ export default defineComponent({
 
   .full-width {
     display: flex;
-    padding-top: 5%;
+    padding-top: 3%;
     flex-direction: column;
     align-items: center;
     height: 100%;
@@ -151,7 +152,7 @@ export default defineComponent({
     .statement-container {
       .subtitle {
         font-family: 'Rijksoverheid Serif Italic';
-        font-size: 2rem;
+        font-size: 1.4rem;
         color: var(--orange);
         margin-bottom: 10px;
         text-align: center;
@@ -160,7 +161,7 @@ export default defineComponent({
       .statement {
         font-family: 'Rijksoverheid Bold';
         text-align: center;
-        font-size: 3.2rem;
+        font-size: 2.4rem;
         color: var(--blue);
       }
     }
