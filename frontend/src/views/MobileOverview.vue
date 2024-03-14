@@ -110,7 +110,6 @@ export default defineComponent({
               console.error('Error fetching reactions:', reactionsError.message);
             } else {
               comment.reactions = reactions || [];
-              console.log(comment.reactions);
             }
           }
           this.comments = comments || [];

@@ -1,14 +1,7 @@
 <template>
   <div class="page home">
-    <dotlottie-player
-      id="couch-lottie"
-      src="https://lottie.host/8bdc9fbb-21fc-4911-9f21-618567149edb/KloXkXOCqr.json"
-      background="transparent"
-      speed="1"
-      style="width: 800px; height: 800px"
-      loop
-      autoplay
-    ></dotlottie-player>
+    <dotlottie-player id="couch-lottie" src="https://lottie.host/2ab7f16f-981f-4569-9ff8-8af10393eb9e/AYzJCBsYeD.json"
+      background="transparent" speed="1" style="width: 600px; height: 600px;" loop autoplay></dotlottie-player>
     <div class="qr-section">
       <img src="@/assets/images/qr-code-new.png" alt="qr" />
       <div class="qr-text">
@@ -18,10 +11,10 @@
     </div>
     <div class="full-width">
       <div class="statement-container">
-        <!-- <p class="subtitle">Bibliotheek de LocHal vraagt zich af...</p> -->
-        <h1 class="statement">{{ statement.statement }}</h1>
+        <p class="subtitle">Bibliotheek de LocHal</p>
+        <h1 class="statement">Vind en maak connecties.</h1>
       </div>
-      <CommentSlider ref="commentSlider" :comments="comments" />
+      <CommentSlider ref="commentSlider" :comments="comments" :reactions="reactions" />
     </div>
   </div>
 </template>
@@ -39,6 +32,7 @@ export default defineComponent({
     return {
       comments: [] as _IComment[],
       statement: {} as _IStatement,
+      reactions: [] as _IReaction[],
     };
   },
   mounted() {
@@ -51,11 +45,10 @@ export default defineComponent({
   methods: {
     async fetchStatement(supabase: any) {
       try {
-        const { data, error } = await supabase.from('statements').select('*').eq('id', 2);
+        const { data, error } = await supabase.from('statements').select('*').eq('id', 3);
         if (error) {
           throw error;
         }
-
         this.statement = data[0];
         await this.fetchCommentsForStatement(supabase, this.statement.id);
       } catch (error) {
@@ -64,9 +57,26 @@ export default defineComponent({
     },
     async fetchCommentsForStatement(supabase: any, statementId: number) {
       try {
-        const { data, error } = await supabase.from('comments').select('*').eq('statement_id', 2);
+        const { data, error } = await supabase.from('comments').select('*').eq('statement_id', 3);
         this.comments = data;
         this.initCommentSlider();
+
+        for (const comment of data) {
+          const { data: reactions, error: reactionsError } = await supabase
+            .from('reactions')
+            .select('*')
+            .eq('comment_id', comment.id);
+
+          if (reactionsError) {
+            console.error('Error fetching reactions:', reactionsError.message);
+          } else {
+            comment.reactions = reactions || [];
+            console.log(comment.reactions);
+          }
+        }
+        this.comments = comments || [];
+        console.log(this.reactions);
+
       } catch (error) {
         console.error('Error fetching opinions:');
       }
@@ -112,13 +122,13 @@ export default defineComponent({
     left: 75px;
 
     p:first-child {
-      color: #c6002a;
+      color: var(--orange);
       font-family: 'Rijksoverheid Bold';
       font-size: 24px;
     }
 
     p:nth-child(2) {
-      color: #c6002a;
+      color: var(--orange);
       font-family: 'Rijksoverheid Regular';
       font-size: 18px;
     }
@@ -130,18 +140,19 @@ export default defineComponent({
 
   .full-width {
     display: flex;
+    padding-top: 5%;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     height: 100%;
     gap: 50px;
     overflow: hidden;
+    max-width: calc(1800px + var(--unit) * 2) !important;
 
     .statement-container {
       .subtitle {
         font-family: 'Rijksoverheid Serif Italic';
         font-size: 2rem;
-        color: #c6002a;
+        color: var(--orange);
         margin-bottom: 10px;
         text-align: center;
       }
@@ -150,7 +161,7 @@ export default defineComponent({
         font-family: 'Rijksoverheid Bold';
         text-align: center;
         font-size: 3.2rem;
-        color: #c6002a;
+        color: var(--blue);
       }
     }
   }

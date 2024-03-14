@@ -1,17 +1,11 @@
 <template>
-  <swiper
-    :slidesPerView="3"
-    :spaceBetween="25"
-    :loop="true"
-    :freeMode="true"
-    :modules="modules"
-    class="mySwiper"
-    @swiper="onSwiper"
-    :autoplay="{
-      delay: 2000,
-      disableOnInteraction: false,
-    }"
-  >
+  <swiper :slidesPerView="4" :spaceBetween="25" :loop="true" :freeMode="true" :modules="modules" class="mySwiper"
+    @swiper="onSwiper" :autoplay="{
+    delay: 2000,
+    disableOnInteraction: false,
+  }">
+    <swiper-slide class="empty-slide"></swiper-slide>
+    <swiper-slide class="empty-slide"></swiper-slide>
     <swiper-slide class="empty-slide"></swiper-slide>
     <swiper-slide class="empty-slide"></swiper-slide>
     <swiper-slide class="empty-slide"></swiper-slide>
@@ -49,6 +43,7 @@ export default defineComponent({
     return {
       modules: [Autoplay],
       swiper: null as any,
+      // reactions: [] as _IReaction[],
     };
   },
   props: {
@@ -56,9 +51,14 @@ export default defineComponent({
       type: Array as () => _IComment[],
       default: () => [],
     },
+    reactions: {
+      type: Array as () => _IReaction[],
+      default: () => [],
+    },
   },
   mounted() {
     this.initSwiper();
+    console.log("Reactions prop:", this.reactions);
   },
   methods: {
     destroySlides() {
@@ -101,16 +101,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-
 .answer {
   background-color: white;
-  border: 1px solid #c6002a;
+  border: 1px solid var(--orange);
   border-radius: 15px;
   padding: 25px;
 
   .comment {
     font-size: 1.6rem;
-      font-family: 'Rijksoverheid Regular';
+    font-family: 'Rijksoverheid Regular';
   }
 }
 
@@ -134,7 +133,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  border: 1px solid #c6002a;
+  border: 1px solid var(--orange);
 
   .comment-info {
     display: flex;
@@ -148,7 +147,7 @@ export default defineComponent({
 
   p.comment {
     font-family: 'Rijksoverheid Bold';
-    color: #c6002a;
+    color: var(--blue);
     text-align: left;
     font-size: 1.2rem;
     margin-bottom: 15px;
@@ -156,7 +155,7 @@ export default defineComponent({
 
   p.name {
     font-family: 'Rijksoverheid Serif Italic';
-    color: #c6002a;
+    color: var(--orange);
     text-align: left;
   }
 }

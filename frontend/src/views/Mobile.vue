@@ -134,7 +134,7 @@ export default defineComponent({
         color: white;
         font-family: 'Rijksoverheid Regular';
         width: 100%;
-        background-color: #c6002a;
+        background-color: var(--orange);
         border: none;
         border-radius: 5px;
         height: 50px;

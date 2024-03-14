@@ -47,7 +47,7 @@ export default defineComponent({
 
 .answer {
   background-color: white;
-  border: 1px solid #c6002a;
+  border: 1px solid var(--orange);
   border-radius: 15px;
   padding: 25px;
   display: flex;
@@ -80,7 +80,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  border: 1px solid #c6002a;
+  border: 1px solid var(--orange);
 
   .comment-info {
     display: flex;
@@ -94,7 +94,7 @@ export default defineComponent({
 
   p.comment {
     font-family: 'Rijksoverheid Bold';
-    color: #c6002a;
+    color: var(--orange);
     text-align: left;
     font-size: 1.2rem;
     margin-bottom: 15px;
@@ -102,7 +102,7 @@ export default defineComponent({
 
   p.name {
     font-family: 'Rijksoverheid Serif Italic';
-    color: #c6002a;
+    color: var(--orange);
     text-align: left;
   }
 }
