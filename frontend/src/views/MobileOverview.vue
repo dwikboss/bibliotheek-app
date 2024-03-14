@@ -3,7 +3,7 @@
     <div class="circle"></div>
     <div class="full-width">
       <div class="mobile-comment" v-for="comment in comments" :key="comment.id">
-        <FormModal v-if="modalOpened" :comment_id="this.comment_id" :comment="this.comment" :author="this.author" @closeModal="openModal()" />
+        <FormModal v-if="modalOpened" :comment_id="comment_id" @closeModal="openModal()" />
         <div>
           <p class="comment">{{ comment.comment }}</p>
           <p class="name">{{ comment.name }}</p>
@@ -11,9 +11,9 @@
         <div class="open-reactions" @click="openReactions(comment)">Bekijk reacties</div>
         <!-- @click="openModal(comment.id, comment.comment, comment.name)" -->
         <div v-if="comment.reactionsOpened" class="reaction-section">
-          <div class="reaction-comment" v-for="reaction in comment.reactions" :key="reaction.id">
-            <p class="reaction-reaction">{{ reaction.reaction }}</p>
-            <p class="reaction-name">{{ reaction.name }}</p>
+          <div class="reaction-comment" v-for="reaction in comment.reactions" :key="(reaction as any).id">
+            <p class="reaction-reaction">{{ (reaction as any).reaction }}</p>
+            <p class="reaction-name">{{ (reaction as any).name }}</p>
           </div>
           <form @submit.prevent="submitForm">
             <input type="reaction" id="reaction" v-model="formData.reaction" required placeholder="reactie" />
@@ -52,7 +52,6 @@ export default defineComponent({
       author: '' as String,
       reactionsOpened: false as boolean,
       modalOpened: false as boolean,
-      comment_id: 0 as Number,
       formData: {
         name: '' as String,
         reaction: '' as String,
@@ -67,7 +66,7 @@ export default defineComponent({
     FormModal,
   },
   methods: {
-    openReactions(comment) {
+    openReactions(comment: _IComment) {
       comment.reactionsOpened = !comment.reactionsOpened;
       this.comment_id = comment.id;
     },
@@ -118,7 +117,7 @@ export default defineComponent({
           console.log(this.reactions);
         }
       } catch (error) {
-        console.error('Error fetching opinions:', error.message);
+        console.error('Error fetching opinions');
       }
     },
   },

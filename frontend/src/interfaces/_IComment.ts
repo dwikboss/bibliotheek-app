@@ -4,4 +4,5 @@ export default interface Comments {
     comment: string;
     name: string;
     reactions: [];
+    reactionsOpened: boolean;
 }
