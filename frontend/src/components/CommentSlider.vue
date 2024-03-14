@@ -165,6 +165,7 @@ export default defineComponent({
       font-family: 'Rijksoverheid Regular';
       color: #00000067;
       font-size: 14px;
+      text-align: right;
     }
 
     .reaction-reaction {
