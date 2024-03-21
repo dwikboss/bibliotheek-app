@@ -13,12 +13,13 @@
         <div class="side-container">
           <div class="side side-left">
             <div class="option option1">{{ stand.option1 }}</div>
-            <div class="voters">
+            <div class="voters" ref="leftVotersContainer">
               <img
                 v-for="(vote, index) in leftSideVotes"
                 :key="index"
                 :src="getImagePath(vote.profile_img)"
                 :alt="'Voter ' + index"
+                :style="{ transform: `translateX(${vote.positionX}px) translateY(${vote.positionY}px)` }"
               />
             </div>
           </div>
@@ -30,6 +31,7 @@
                 :key="index"
                 :src="getImagePath(vote.profile_img)"
                 :alt="'Voter ' + index"
+                :style="{ transform: `translateX(${vote.positionX}px) translateY(${vote.positionY}px)` }"
               />
             </div>
           </div>
@@ -70,9 +72,13 @@ export default defineComponent({
           console.log('Change received!', payload);
           const newVote = payload.new;
           if (newVote.selected_option === 1) {
+            newVote.positionX = Math.random() * 200 - 100; // Set initial random X position
+            newVote.positionY = Math.random() * this.$refs.leftVotersContainer.clientHeight; // Set initial random Y position
+            console.log(Math.random() * this.$refs.leftVotersContainer.clientHeight);
             this.leftSideVotes.push(newVote);
-            console.log('test' + newVote);
           } else if (newVote.selected_option === 2) {
+            newVote.positionX = Math.random() * 200 - 100; // Set initial random X position
+            newVote.positionY = Math.random() * this.$refs.leftVotersContainer.clientHeight; // Set initial random Y position
             this.rightSideVotes.push(newVote);
           }
         })
@@ -124,6 +130,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style lang="scss" scoped>
 .page.home {
   background-color: #f6f6f6;
