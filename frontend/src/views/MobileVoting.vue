@@ -180,7 +180,7 @@ export default defineComponent({
         .side {
           width: 50%;
           position: relative;
-          background-color: rgba(0, 0, 0, 0.822);
+          background-color: rgba(0, 0, 0, 0.222);
           pointer-events: none;
 
           .option {

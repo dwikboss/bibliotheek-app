@@ -8,17 +8,31 @@
       </div>
     </div>
     <div class="full-width">
-      <div class="profile-pics">
-        
-      </div>
       <div class="stand-container">
         <h1 class="stand">{{ stand.stand }}</h1>
         <div class="side-container">
           <div class="side side-left">
             <div class="option option1">{{ stand.option1 }}</div>
+            <div class="voters">
+              <img
+                v-for="(vote, index) in leftSideVotes"
+                :key="index"
+                :src="getImagePath(vote.profile_img)"
+                :alt="'Voter ' + index"
+              />
+            </div>
           </div>
           <div class="side side-right">
-            <div class="option option1">{{ stand.option2 }}</div></div>
+            <div class="option option2">{{ stand.option2 }}</div>
+            <div class="voters">
+              <img
+                v-for="(vote, index) in rightSideVotes"
+                :key="index"
+                :src="getImagePath(vote.profile_img)"
+                :alt="'Voter ' + index"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -29,20 +43,41 @@
 import { defineComponent } from 'vue';
 import { supabase } from '../lib/supabaseClient';
 import type _IStand from '../interfaces/_IStand';
+import type _IVote from '../interfaces/_IVote';
 
 export default defineComponent({
   name: 'HomeView',
   data() {
     return {
       stand: {} as _IStand,
+      leftSideVotes: [] as _IVote[],
+      rightSideVotes: [] as _IVote[],
       id: 1,
+      subscription: null as any,
     };
   },
   async mounted() {
     await this.fetchLatestStand();
+    await this.fetchVotes();
+    this.subscribeVotes();
   },
   components: {},
   methods: {
+    subscribeVotes() {
+      const channels = supabase
+        .channel('votes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'votes' }, (payload) => {
+          console.log('Change received!', payload);
+          const newVote = payload.new;
+          if (newVote.selected_option === 1) {
+            this.leftSideVotes.push(newVote);
+            console.log('test' + newVote);
+          } else if (newVote.selected_option === 2) {
+            this.rightSideVotes.push(newVote);
+          }
+        })
+        .subscribe();
+    },
     async fetchLatestStand() {
       try {
         const { data, error } = await supabase
@@ -66,10 +101,29 @@ export default defineComponent({
         console.error('Error fetching latest stand:', error.message);
       }
     },
+    async fetchVotes() {
+      try {
+        const { data: votes, error } = await supabase.from('votes').select('*').eq('stand_id', this.id);
+
+        if (error) {
+          console.error('Error fetching votes:', error.message);
+          return;
+        }
+
+        if (votes) {
+          this.leftSideVotes = votes.filter((vote) => vote.selected_option === 1);
+          this.rightSideVotes = votes.filter((vote) => vote.selected_option === 2);
+        }
+      } catch (error) {
+        console.error('Error fetching votes:', error.message);
+      }
+    },
+    getImagePath(imageName: string): string {
+      return `/src/assets/images/icons/${imageName}.png`;
+    },
   },
 });
 </script>
-
 <style lang="scss" scoped>
 .page.home {
   background-color: #f6f6f6;
@@ -137,6 +191,12 @@ export default defineComponent({
         .side {
           width: 50%;
           position: relative;
+
+          .voters {
+            img {
+              width: 50px;
+            }
+          }
 
           .option {
             color: white;
