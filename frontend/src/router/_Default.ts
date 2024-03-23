@@ -14,13 +14,19 @@ const routes = [
     path: '/mobile/cafe',
     name: PageName.MOBILE_CAFE,
     component: MobileVoting,
-    props: { presetImages: ['cafe_1', 'cafe_2'], location: 'cafe' },
+    props: { presetImages: ['cafe_1', 'cafe_2', 'cafe_3', 'cafe_4'], location: 'cafe' },
   },
   {
     path: '/mobile/student',
     name: PageName.MOBILE_STUDENT,
     component: MobileVoting,
-    props: { presetImages: ['student_1', 'student_2'], location: 'student' },
+    props: { presetImages: ['student_1', 'student_2', 'student_3', 'student_4'], location: 'student' },
+  },
+  {
+    path: '/mobile/kids',
+    name: PageName.MOBILE_KIDS,
+    component: MobileVoting,
+    props: { presetImages: ['kids_1', 'kids_2', 'kids_3', 'kids_4'], location: 'kids' },
   },
 ];
 

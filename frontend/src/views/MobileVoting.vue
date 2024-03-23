@@ -63,6 +63,31 @@ export default defineComponent({
     getImagePath(imageName: any): any {
       return `/src/assets/images/icons/${this.location}/${imageName}.png`;
     },
+    async updatePendingTable(indexToFill: any) {
+      if (indexToFill == null) {
+        try {
+          const { data, error } = await supabase
+            .from('pending')
+            .update({
+              [`${this.location}_img`]: null,
+            })
+            .eq('stand_id', this.id);
+        } catch (error) {
+          console.error('Error updating pending table:', error);
+        }
+      } else {
+        try {
+          const { data, error } = await supabase
+            .from('pending')
+            .update({
+              [`${this.location}_img`]: this.presetImages[this.selectedImageIndex!],
+            })
+            .eq('stand_id', this.id);
+        } catch (error) {
+          console.error('Error updating pending table:', error);
+        }
+      }
+    },
     async fetchLatestStand() {
       try {
         const { data, error } = await supabase
@@ -83,18 +108,23 @@ export default defineComponent({
           console.error('No stand found.');
         }
       } catch (error) {
-        console.error('Error fetching latest stand:', error.message);
+        console.error('Error fetching latest stand:', error);
       }
     },
     selectImage(index: number) {
-      this.selectedImageIndex = index;
+      if (this.selectedImageIndex != null) {
+        this.selectedImageIndex = null;
+        this.updatePendingTable(null);
+      } else {
+        this.selectedImageIndex = index;
+        this.updatePendingTable(index);
+      }
     },
     async voteForOption(option: number) {
       if (this.selectedImageIndex !== null) {
         this.selectedOption = option;
 
         try {
-          // Insert the vote into the database
           const { data, error } = await supabase.from('votes').insert([
             {
               stand_id: this.stand.id,
@@ -102,17 +132,9 @@ export default defineComponent({
               profile_img: this.presetImages[this.selectedImageIndex],
             },
           ]);
-
-          if (error) {
-            console.error('Error inserting vote:', error.message);
-            return;
-          }
-
-          if (data) {
-            console.log('Vote inserted successfully:', data);
-          }
+          this.selectedImageIndex = null;
         } catch (error) {
-          console.error('Error inserting vote:', error.message);
+          console.error('Error inserting vote:', error);
         }
       }
     },
@@ -182,6 +204,7 @@ export default defineComponent({
           position: relative;
           background-color: rgba(0, 0, 0, 0.222);
           pointer-events: none;
+          transition: all 250ms ease;
 
           .option {
             color: white;

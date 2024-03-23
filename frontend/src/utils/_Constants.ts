@@ -3,4 +3,5 @@ export enum PageName {
   MOBILE = 'Mobile',
   MOBILE_CAFE = 'cafe',
   MOBILE_STUDENT = 'student',
+  MOBILE_KIDS = 'kids',
 }

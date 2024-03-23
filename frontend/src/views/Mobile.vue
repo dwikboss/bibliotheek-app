@@ -25,13 +25,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { supabase } from '../lib/supabaseClient';
-import type _IStatement from '../interfaces/_IStatement';
 
 export default defineComponent({
   name: 'HomeView',
   data() {
     return {
-      statement: {} as _IStatement,
       formData: {
         name: '' as String,
         comment: '' as String,
@@ -50,7 +48,6 @@ export default defineComponent({
         if (error) {
           throw error;
         }
-        this.statement = data[0];
       } catch (error) {
         console.error('Error fetching opinions:');
       }

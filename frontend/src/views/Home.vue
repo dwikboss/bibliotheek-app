@@ -8,6 +8,8 @@
       </div>
     </div>
     <div class="full-width">
+      <div class="profile_icons">
+      </div>
       <div class="stand-container">
         <h1 class="stand">{{ stand.stand }}</h1>
         <div class="side-container">
@@ -25,7 +27,7 @@
           </div>
           <div class="side side-right">
             <div class="option option2">{{ stand.option2 }}</div>
-            <div class="voters">
+            <div class="voters" ref="rightVotersContainer">
               <img
                 v-for="(vote, index) in rightSideVotes"
                 :key="index"
@@ -62,6 +64,7 @@ export default defineComponent({
     await this.fetchLatestStand();
     await this.fetchVotes();
     this.subscribeVotes();
+    console.log(this.$refs.rightVotersContainer.clientHeight);
   },
   components: {},
   methods: {
@@ -72,13 +75,13 @@ export default defineComponent({
           console.log('Change received!', payload);
           const newVote = payload.new;
           if (newVote.selected_option === 1) {
-            newVote.positionX = Math.random() * 200 - 100; // Set initial random X position
-            newVote.positionY = Math.random() * this.$refs.leftVotersContainer.clientHeight; // Set initial random Y position
-            console.log(Math.random() * this.$refs.leftVotersContainer.clientHeight);
+            newVote.positionX = Math.random() * this.$refs.leftVotersContainer.clientWidth;
+            newVote.positionY = Math.random() * this.$refs.rightVotersContainer.clientHeight;
+            console.log(newVote.positionX);
             this.leftSideVotes.push(newVote);
           } else if (newVote.selected_option === 2) {
-            newVote.positionX = Math.random() * 200 - 100; // Set initial random X position
-            newVote.positionY = Math.random() * this.$refs.leftVotersContainer.clientHeight; // Set initial random Y position
+            newVote.positionX = Math.random() * this.$refs.leftVotersContainer.clientWidth;
+            newVote.positionY = Math.random() * this.$refs.rightVotersContainer.clientHeight;
             this.rightSideVotes.push(newVote);
           }
         })
@@ -104,7 +107,7 @@ export default defineComponent({
           console.error('No stand found.');
         }
       } catch (error) {
-        console.error('Error fetching latest stand:', error.message);
+        console.error('Error fetching latest stand:', error);
       }
     },
     async fetchVotes() {
@@ -121,7 +124,7 @@ export default defineComponent({
           this.rightSideVotes = votes.filter((vote) => vote.selected_option === 2);
         }
       } catch (error) {
-        console.error('Error fetching votes:', error.message);
+        console.error('Error fetching votes:', error);
       }
     },
     getImagePath(imageName: string): string {
@@ -173,6 +176,23 @@ export default defineComponent({
     max-width: 100% !important;
     padding: 0;
 
+    .profile_icons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto 0;
+      z-index: 999;
+      justify-content: center;
+
+      img {
+        width: 80px;
+        transition: all 200ms ease;
+      }
+    }
+
     .stand-container {
       width: 100%;
       height: 100%;
@@ -184,7 +204,7 @@ export default defineComponent({
         left: 0;
         right: 0;
         color: white;
-        margin-top: 25px;
+        margin-top: 75px;
         font-size: 3rem;
         z-index: 999;
       }
@@ -200,8 +220,12 @@ export default defineComponent({
           position: relative;
 
           .voters {
+            height: 100%;
             img {
               width: 50px;
+              position: absolute;
+              left: 0;
+              top: 0;
             }
           }
 
