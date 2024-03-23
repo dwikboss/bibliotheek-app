@@ -171,7 +171,7 @@ export default defineComponent({
     scale: 1;
   }
   50% {
-    scale: 1.25;
+    scale: 1.1;
   }
   100% {
     scale: 1;
@@ -222,7 +222,7 @@ export default defineComponent({
     .profile_icons {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 20px;
       position: absolute;
       top: 0;
       bottom: 0;

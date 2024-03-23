@@ -1,7 +1,6 @@
 import { PageName } from '@/utils/_Constants';
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
-import Mobile from '../views/Mobile.vue';
 import MobileVoting from '../views/MobileVoting.vue';
 
 const routes = [
