@@ -5,5 +5,4 @@ export default interface _IReaction {
     profile_img: string;
     positionX: number;
     positionY: number;
-    selected_option: any;
 }
