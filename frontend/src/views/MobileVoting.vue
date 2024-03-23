@@ -123,7 +123,6 @@ export default defineComponent({
     async voteForOption(option: number) {
       if (this.selectedImageIndex !== null) {
         this.selectedOption = option;
-
         try {
           const { data, error } = await supabase.from('votes').insert([
             {
@@ -133,6 +132,7 @@ export default defineComponent({
             },
           ]);
           this.selectedImageIndex = null;
+          this.updatePendingTable(null);
         } catch (error) {
           console.error('Error inserting vote:', error);
         }

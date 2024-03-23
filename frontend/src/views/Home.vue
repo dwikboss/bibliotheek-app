@@ -9,6 +9,12 @@
     </div>
     <div class="full-width">
       <div class="profile_icons">
+        <img
+          v-for="(image, index) in pendingImages"
+          :key="index"
+          :src="getImagePath(image)"
+          :alt="'Profile Icon ' + index"
+        />
       </div>
       <div class="stand-container">
         <h1 class="stand">{{ stand.stand }}</h1>
@@ -56,6 +62,7 @@ export default defineComponent({
       stand: {} as _IStand,
       leftSideVotes: [] as _IVote[],
       rightSideVotes: [] as _IVote[],
+      pendingImages: [] as any,
       id: 1,
       subscription: null as any,
     };
@@ -63,16 +70,31 @@ export default defineComponent({
   async mounted() {
     await this.fetchLatestStand();
     await this.fetchVotes();
+    await this.fetchPendingImages();
     this.subscribeVotes();
-    console.log(this.$refs.rightVotersContainer.clientHeight);
   },
   components: {},
   methods: {
+    async fetchPendingImages() {
+      try {
+        const { data: pendingImagesData, error } = await supabase.from('pending').select('*').eq('stand_id', this.id);
+        if (pendingImagesData) {
+          const allPendingImages = [];
+          for (const item of pendingImagesData) {
+            allPendingImages.push(item.cafe_img, item.student_img, item.kids_img);
+          }
+          this.pendingImages = allPendingImages.filter(Boolean);
+        }
+      } catch (error) {
+        console.error('Error fetching pending images:', error);
+      }
+    },
     subscribeVotes() {
       const channels = supabase
         .channel('votes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'votes' }, (payload) => {
+        .on('postgres_changes', { event: '*', schema: 'public', table: '*' }, (payload) => {
           console.log('Change received!', payload);
+          this.fetchPendingImages();
           const newVote = payload.new;
           if (newVote.selected_option === 1) {
             newVote.positionX = Math.random() * this.$refs.leftVotersContainer.clientWidth;
@@ -135,6 +157,27 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@keyframes grow {
+  0% {
+    scale: 0;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.25;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
 .page.home {
   background-color: #f6f6f6;
   height: 100vh;
@@ -189,7 +232,7 @@ export default defineComponent({
 
       img {
         width: 80px;
-        transition: all 200ms ease;
+        animation: pulse 3s ease-in-out 250ms infinite;
       }
     }
 
