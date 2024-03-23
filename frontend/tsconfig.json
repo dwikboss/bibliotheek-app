@@ -1,6 +1,7 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "compilerOptions": {
+    "checkJs": false,
     "useUnknownInCatchVariables": false,
     "composite": true,
     "target": "esnext",
