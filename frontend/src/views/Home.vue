@@ -54,6 +54,7 @@ import { defineComponent } from 'vue';
 import { supabase } from '../lib/supabaseClient';
 import type _IStand from '../interfaces/_IStand';
 import type _IVote from '../interfaces/_IVote';
+import type _IVotePayload from '../interfaces/_IVotePayload';
 
 export default defineComponent({
   name: 'HomeView',
@@ -90,20 +91,23 @@ export default defineComponent({
       }
     },
     subscribeVotes() {
+      const leftContainer = this.$refs.leftVotersContainer as HTMLElement;
+      const rightContainer = this.$refs.rightVotersContainer as HTMLElement;
+
       const channels = supabase
         .channel('votes')
         .on('postgres_changes', { event: '*', schema: 'public', table: '*' }, (payload) => {
           console.log('Change received!', payload);
           this.fetchPendingImages();
-          const newVote = payload.new;
+          const newVote = payload.new as _IVotePayload;
           if (newVote.selected_option === 1) {
-            newVote.positionX = Math.random() * this.$refs.leftVotersContainer.clientWidth;
-            newVote.positionY = Math.random() * this.$refs.rightVotersContainer.clientHeight;
+            newVote.positionX = Math.random() * leftContainer.clientWidth;
+            newVote.positionY = Math.random() * rightContainer.clientHeight;
             console.log(newVote.positionX);
             this.leftSideVotes.push(newVote);
           } else if (newVote.selected_option === 2) {
-            newVote.positionX = Math.random() * this.$refs.leftVotersContainer.clientWidth;
-            newVote.positionY = Math.random() * this.$refs.rightVotersContainer.clientHeight;
+            newVote.positionX = Math.random() * leftContainer.clientWidth;
+            newVote.positionY = Math.random() * rightContainer.clientHeight;
             this.rightSideVotes.push(newVote);
           }
         })
