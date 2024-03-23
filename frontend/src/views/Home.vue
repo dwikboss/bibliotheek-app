@@ -154,7 +154,7 @@ export default defineComponent({
       }
     },
     getImagePath(imageName: string): string {
-      return `/src/assets/images/icons/${imageName}.png`;
+      return `/images/icons/${imageName}.png`;
     },
   },
 });

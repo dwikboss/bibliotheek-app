@@ -61,7 +61,7 @@ export default defineComponent({
   components: {},
   methods: {
     getImagePath(imageName: any): any {
-      return `/src/assets/images/icons/${this.location}/${imageName}.png`;
+      return `/images/icons/${this.location}/${imageName}.png`;
     },
     async updatePendingTable(indexToFill: any) {
       if (indexToFill == null) {
