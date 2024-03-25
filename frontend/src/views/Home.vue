@@ -182,18 +182,6 @@ export default defineComponent({
   }
 }
 
-@keyframes bob {
-  0% {
-    transform: translateY(-5px);
-  }
-  50% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-5px);
-  }
-}
-
 .page.home {
   background-color: #f6f6f6;
   height: 100vh;
