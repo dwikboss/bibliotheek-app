@@ -236,7 +236,6 @@ export default defineComponent({
 
       img {
         width: 80px;
-        animation: pulse 3s ease-in-out 250ms infinite;
       }
     }
 
