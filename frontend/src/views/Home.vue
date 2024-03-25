@@ -281,7 +281,7 @@ export default defineComponent({
           .voters {
             height: 100%;
             img {
-              animation: bob 5s ease-in-out 250ms infinite, grow 300ms ease-in-out 350ms forwards;
+              animation: pulse 3s ease-in-out 250ms infinite;
               width: 70px;
               position: absolute;
               left: 0;
