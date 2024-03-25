@@ -178,7 +178,7 @@ export default defineComponent({
       align-items: center;
       position: fixed;
       right: 50px;
-      top: 50px;
+      bottom: 50px;
       font-family: 'Rijksoverheid Bold';
       border-radius: 999px;
       z-index: 99999;
