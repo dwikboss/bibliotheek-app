@@ -182,6 +182,18 @@ export default defineComponent({
   }
 }
 
+@keyframes bob {
+  0% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-5px);
+  }
+}
+
 .page.home {
   background-color: #f6f6f6;
   height: 100vh;
@@ -269,7 +281,8 @@ export default defineComponent({
           .voters {
             height: 100%;
             img {
-              width: 50px;
+              animation: bob 5s ease-in-out 250ms infinite, grow 300ms ease-in-out 350ms forwards;
+              width: 70px;
               position: absolute;
               left: 0;
               top: 0;

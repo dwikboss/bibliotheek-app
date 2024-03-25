@@ -1,15 +1,14 @@
 <template>
   <div class="page mobile">
+    <VideoModal class="videoComponent" v-if="videoOpen"/>
     <div class="full-width">
+      <div class="explanation">
+        <div class="q" @click="questionVideo()">?</div>
+      </div>
       <div class="profile_icons">
-        <img
-          v-for="(image, index) in presetImages"
-          :key="index"
-          :src="getImagePath(image)"
-          :alt="'Profile Icon ' + index"
-          @click="selectImage(index)"
-          :class="{ selected: selectedImageIndex === index }"
-        />
+        <img v-for="(image, index) in presetImages" :key="index" :src="getImagePath(image)"
+          :alt="'Profile Icon ' + index" @click="selectImage(index)"
+          :class="{ selected: selectedImageIndex === index }" />
       </div>
       <div class="stand-container">
         <h1 class="stand">{{ stand.stand }}</h1>
@@ -30,6 +29,7 @@
 import { defineComponent } from 'vue';
 import { supabase } from '../lib/supabaseClient';
 import type _IStand from '../interfaces/_IStand';
+import VideoModal from '../components/VideoModal.vue';
 
 export default defineComponent({
   name: 'MobileVoting',
@@ -53,13 +53,19 @@ export default defineComponent({
       selectedImageIndex: null as number | null,
       selectedOption: null as number | null,
       id: 1,
+      videoOpen: false as Boolean,
     };
   },
   async mounted() {
     await this.fetchLatestStand();
   },
-  components: {},
+  components: {
+    VideoModal
+  },
   methods: {
+    questionVideo(){
+      this.videoOpen = !this.videoOpen;
+    },
     getImagePath(imageName: any): any {
       return `/images/icons/${this.location}/${imageName}.png`;
     },
@@ -143,6 +149,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
 .page.mobile {
   height: 100vh;
 
@@ -156,6 +163,33 @@ export default defineComponent({
     overflow: hidden;
     max-width: 100% !important;
     padding: 0;
+    
+    .videoComponent {
+      transform: translateY(-100vh);
+      animation: slide 500ms ease-in-out 300ms forwards;
+    }
+
+    .explanation {
+      background-color: rgb(132, 132, 132);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      right: 50px;
+      top: 50px;
+      font-family: 'Rijksoverheid Bold';
+      border-radius: 999px;
+      z-index: 99999;
+
+      .q {
+        margin-top: 5px;
+        margin-left: 3px;
+        font-size: 2rem;
+        color: white;
+      }
+    }
 
     .profile_icons {
       display: flex;
@@ -216,6 +250,7 @@ export default defineComponent({
             font-size: 7rem;
             opacity: 0.3;
           }
+
           transition: all 200ms ease;
 
           &.side-left {
