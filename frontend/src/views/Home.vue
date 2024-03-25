@@ -235,6 +235,8 @@ export default defineComponent({
       justify-content: center;
 
       img {
+
+        animation: pulse 3s ease-in-out 250ms infinite;
         width: 80px;
       }
     }
@@ -268,7 +270,6 @@ export default defineComponent({
           .voters {
             height: 100%;
             img {
-              animation: pulse 3s ease-in-out 250ms infinite;
               width: 70px;
               position: absolute;
               left: 0;
