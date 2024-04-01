@@ -1,12 +1,5 @@
 <template>
   <div class="page home">
-    <div class="qr-section">
-      <img src="@/assets/images/qr-code.png" alt="qr" />
-      <div class="qr-text">
-        <p>Ook iets achterlaten? Scan de QR code</p>
-        <p>Of ga naar https://lochal-connecties.vercel.app/mobile</p>
-      </div>
-    </div>
     <div class="full-width">
       <div class="profile_icons">
         <img
